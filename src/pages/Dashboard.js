@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../App';
-import { Brain, Zap, Shield, Globe, FileText, Image, Video, Music } from 'lucide-react';
+import GenerateCard from './GenerateCard';
+import OutputCard from './OutputCard';
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('text');
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedContent, setGeneratedContent] = useState(null);
   const { colors } = useTheme();
 
   const dashboardStyles = {
@@ -38,149 +38,19 @@ const Dashboard = () => {
       gridTemplateColumns: '1fr',
       gap: '3rem',
     },
-    card: {
-      background: colors.surface,
-      borderRadius: '20px',
-      border: `1px solid ${colors.border}`,
-      overflow: 'hidden',
-    },
-    cardHeader: {
-      padding: '2rem 2rem 1rem 2rem',
-      borderBottom: `1px solid ${colors.border}`,
-    },
-    cardTitle: {
-      fontSize: '1.5rem',
-      fontWeight: 'bold',
-      color: colors.text,
-      marginBottom: '0.5rem',
-    },
-    cardSubtitle: {
-      color: colors.textSecondary,
-      fontSize: '1rem',
-    },
-    cardContent: {
-      padding: '2rem',
-    },
-    tabs: {
-      display: 'flex',
-      gap: '1rem',
-      marginBottom: '2rem',
-      flexWrap: 'wrap',
-    },
-    tab: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '0.5rem',
-      padding: '1rem 1.5rem',
-      background: 'transparent',
-      border: `1px solid ${colors.border}`,
-      borderRadius: '12px',
-      color: colors.text,
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      fontSize: '1rem',
-      fontWeight: '500',
-    },
-    activeTab: {
-      background: colors.gradient,
-      color: 'white',
-      borderColor: 'transparent',
-    },
-    inputGroup: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '1.5rem',
-      marginBottom: '2rem',
-    },
-    input: {
-      padding: '1rem 1.5rem',
-      background: 'transparent',
-      border: `1px solid ${colors.border}`,
-      borderRadius: '12px',
-      color: colors.text,
-      fontSize: '1rem',
-      transition: 'all 0.3s ease',
-    },
-    textarea: {
-      padding: '1rem 1.5rem',
-      background: 'transparent',
-      border: `1px solid ${colors.border}`,
-      borderRadius: '12px',
-      color: colors.text,
-      fontSize: '1rem',
-      minHeight: '120px',
-      resize: 'vertical',
-      transition: 'all 0.3s ease',
-    },
-    select: {
-      padding: '1rem 1.5rem',
-      background: 'transparent',
-      border: `1px solid ${colors.border}`,
-      borderRadius: '12px',
-      color: colors.text,
-      fontSize: '1rem',
-    },
-    button: {
-      width: '100%',
-      padding: '1.25rem 2rem',
-      background: colors.gradient,
-      color: 'white',
-      border: 'none',
-      borderRadius: '12px',
-      fontSize: '1.1rem',
-      fontWeight: '600',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '0.5rem',
-      transition: 'all 0.3s ease',
-    },
-    featuresGrid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '1.5rem',
-      marginTop: '3rem',
-    },
-    featureCard: {
-      background: colors.surface,
-      padding: '2rem',
-      borderRadius: '16px',
+    emptyState: {
+      background: colors.cardGradient,
+      padding: '4rem 2rem',
+      borderRadius: '24px',
       border: `1px solid ${colors.border}`,
       textAlign: 'center',
-      transition: 'all 0.3s ease',
+      backdropFilter: 'blur(10px)',
     },
   };
 
-  const contentTypes = [
-    { id: 'text', label: 'Text Content', icon: FileText, description: 'Articles, social posts, emails' },
-    { id: 'image', label: 'Visual Assets', icon: Image, description: 'Graphics, infographics, designs' },
-    { id: 'video', label: 'Video Scripts', icon: Video, description: 'Storyboards, scripts, captions' },
-    { id: 'audio', label: 'Audio Content', icon: Music, description: 'Podcasts, voiceovers, scripts' },
-  ];
-
-  const features = [
-    {
-      icon: Zap,
-      title: 'Lightning Fast',
-      description: 'Generate content in seconds, not hours'
-    },
-    {
-      icon: Shield,
-      title: 'Enterprise Security',
-      description: 'Bank-level encryption and verification'
-    },
-    {
-      icon: Globe,
-      title: 'Global Reach',
-      description: '50+ languages and cultural contexts'
-    },
-    {
-      icon: Brain,
-      title: 'Smart Optimization',
-      description: 'AI-powered performance insights'
-    },
-  ];
+  const handleGenerate = (content) => {
+    setGeneratedContent(content);
+  };
 
   return (
     <motion.div
@@ -190,143 +60,44 @@ const Dashboard = () => {
       style={dashboardStyles.container}
     >
       <div style={dashboardStyles.content}>
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          style={dashboardStyles.header}
-        >
+        <div style={dashboardStyles.header}>
           <h1 style={dashboardStyles.heading}>
-            AI Content <span style={{ background: colors.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Workflow</span>
+            AI Content <span style={{ background: colors.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Studio</span>
           </h1>
           <p style={dashboardStyles.subheading}>
-            Streamline your content production with intelligent automation and verification
+            Generate text content and AI-powered images with Stable Diffusion integration
           </p>
-        </motion.div>
+        </div>
 
         <div style={dashboardStyles.grid}>
-          {/* Content Creation Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            style={dashboardStyles.card}
-          >
-            <div style={dashboardStyles.cardHeader}>
-              <h2 style={dashboardStyles.cardTitle}>
-                <Brain style={{ marginRight: '0.5rem' }} size={24} />
-                Content Generation Hub
-              </h2>
-              <p style={dashboardStyles.cardSubtitle}>
-                Create high-quality content across multiple formats and languages
-              </p>
-            </div>
-
-            <div style={dashboardStyles.cardContent}>
-              {/* Content Type Tabs */}
-              <div style={dashboardStyles.tabs}>
-                {contentTypes.map((type) => (
-                  <motion.button
-                    key={type.id}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setActiveTab(type.id)}
-                    style={{
-                      ...dashboardStyles.tab,
-                      ...(activeTab === type.id && dashboardStyles.activeTab),
-                    }}
-                  >
-                    <type.icon size={20} />
-                    {type.label}
-                  </motion.button>
-                ))}
-              </div>
-
-              {/* Input Form */}
-              <div style={dashboardStyles.inputGroup}>
-                <input
-                  type="text"
-                  placeholder="Enter content topic or brief..."
-                  style={dashboardStyles.input}
-                />
-                
-                <textarea
-                  placeholder="Add specific requirements, tone, or style guidelines..."
-                  style={dashboardStyles.textarea}
-                />
-
-                <select style={dashboardStyles.select}>
-                  <option>Select target audience</option>
-                  <option>General Public</option>
-                  <option>Enterprise B2B</option>
-                  <option>Education Sector</option>
-                  <option>Media & Press</option>
-                </select>
-
-                <select style={dashboardStyles.select}>
-                  <option>English (Global)</option>
-                  <option>Spanish (Latin America)</option>
-                  <option>French (International)</option>
-                  <option>Hindi (India)</option>
-                  <option>Arabic (Middle East)</option>
-                </select>
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                style={dashboardStyles.button}
-                onClick={() => setIsGenerating(true)}
-              >
-                {isGenerating ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      style={{ width: '20px', height: '20px', border: '2px solid white', borderTop: '2px solid transparent', borderRadius: '50%' }}
-                    />
-                    Generating Content...
-                  </>
-                ) : (
-                  <>
-                    <Zap size={20} />
-                    Generate Intelligent Content
-                  </>
-                )}
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Features Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            style={dashboardStyles.featuresGrid}
-          >
-            {features.map((feature, index) => (
+          <GenerateCard onGenerate={handleGenerate} />
+          
+          <div>
+            {generatedContent ? (
+              <OutputCard content={generatedContent} />
+            ) : (
               <motion.div
-                key={index}
-                whileHover={{ y: -5, scale: 1.02 }}
-                style={dashboardStyles.featureCard}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={dashboardStyles.emptyState}
               >
-                <feature.icon 
-                  size={48} 
-                  style={{ 
-                    color: colors.primary,
-                    margin: '0 auto 1rem'
-                  }} 
-                />
-                <h3 style={{ color: colors.text, marginBottom: '0.5rem', fontSize: '1.25rem', fontWeight: '600' }}>
-                  {feature.title}
+                <div style={{ width: '80px', height: '80px', background: colors.gradient, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    style={{ width: '40px', height: '40px', border: '2px solid white', borderTop: '2px solid transparent', borderRadius: '50%' }}
+                  />
+                </div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: '600', color: colors.text, marginBottom: '1rem' }}>
+                  Ready to Create Magic
                 </h3>
-                <p style={{ color: colors.textSecondary, lineHeight: 1.5 }}>
-                  {feature.description}
+                <p style={{ color: colors.textSecondary, fontSize: '1.1rem' }}>
+                  Generate content and AI images to see the output here. 
+                  Your creations will appear in this section with full verification details.
                 </p>
               </motion.div>
-            ))}
-          </motion.div>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>
